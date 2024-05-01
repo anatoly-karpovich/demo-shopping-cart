@@ -45,11 +45,19 @@ class ShopStorageService {
 
   removeItemFromShopCard(productId) {
     const products = this.getProductsInShopingCard();
-    const productIndex = products.findIndex((product) => product.id === productId);
+    const productIndex = products.findIndex((product) => product === productId);
     if (productIndex !== -1) {
       products.splice(productIndex, 1);
       this.setProductsInShopCard(products);
     }
+    return products;
+  }
+
+  removeAllItemsWithSpecificIdFromCart(productId) {
+    const products = this.getProductsInShopingCard();
+    const productsAfterRemoving = products.filter((id) => id !== productId);
+    this.setProductsInShopCard(productsAfterRemoving);
+    return productsAfterRemoving;
   }
 
   getRebates() {
