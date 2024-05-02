@@ -14,10 +14,10 @@ function generateProductCardLayout({ id, title, description, price }) {
   `;
 }
 
-function generateCheckoutButton(enable = false) {
+function generateCheckoutButton(text, enable = false) {
   return `
   <div class="mt-3">
-    <button class="w-100 btn btn-primary btn-lg" type="submit" id="checkout-button" ${enable ? "" : "disabled"}>Continue to checkout</button>
+    <button class="w-100 btn btn-primary btn-lg" type="submit" id="${text.toLowerCase().split(" ").join("-")}-button" ${enable ? "" : "disabled"}>${text}</button>
   </div>`;
 }
 

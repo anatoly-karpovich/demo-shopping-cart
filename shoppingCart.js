@@ -17,6 +17,11 @@ function addEventListenersToShoppingCartPage() {
     rebateInput.value = "";
     updateTotalPriceInShoppingCart();
   });
+
+  document.getElementById("continue-to-checkout-button").addEventListener("click", (event) => {
+    event.preventDefault();
+    renderCheckoutPage();
+  });
 }
 
 function deleteProductFromShoppingCart(id) {
@@ -138,7 +143,7 @@ function generateShoppingCartLayout(productsInShoppingCart, rebates = []) {
           ${generateRebatesLayout(rebates)}
         </div>
       </form>
-        ${generateCheckoutButton(numerOfProductsInShoppingCard > 0)}
+        ${generateCheckoutButton("Continue to checkout", numerOfProductsInShoppingCard > 0)}
     </div>`;
 }
 
@@ -152,7 +157,7 @@ function updateTotalPriceInShoppingCart() {
   const totalPrice = +getTotalPriceFromProducsObject(products);
   const totalPriceWithRebates = calculatePriceWithRebates(totalPrice, state.appliedRebates);
   const totalPriceInShoppingCart = document.getElementById("total-price");
-  totalPriceInShoppingCart.innerText = "$" + totalPriceWithRebates;
+  totalPriceInShoppingCart.innerText = "$" + totalPriceWithRebates + (totalPrice !== totalPriceWithRebates ? ` (-$${totalPrice - totalPriceWithRebates})` : "");
   state.totalPrice = totalPriceWithRebates;
 }
 

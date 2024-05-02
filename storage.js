@@ -63,6 +63,10 @@ class ShopStorageService {
     return products;
   }
 
+  removeAllProductsFromShopCard() {
+    this.#setProductsInShopCard({});
+  }
+
   getRebates() {
     return this.#storageService.getDataByKey("rebates");
   }
