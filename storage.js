@@ -51,7 +51,7 @@ class ShopStorageService {
 
   reduceProductAmountInShoppingCardByOne(productId) {
     const products = this.getProductsInShopingCard();
-    products[productId].length > 1 ? products[productId]-- : delete products[productId];
+    products[productId]--;
     this.#setProductsInShopCard(products);
     return products;
   }

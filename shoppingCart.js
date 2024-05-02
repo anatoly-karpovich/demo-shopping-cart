@@ -39,7 +39,9 @@ function generateShoppingCartProductLayout(product, amount) {
         </div>
         <div class="mt-2 d-flex justify-content-start align-items-center">
           <span class="me-2 fw-bold">Amount: </span>
-          <span>${amount}</span>
+          <button class="btn text-primary" data-plus-id="${product.id}" name="plus-button" onclick="adjustProductAmount('${product.id}', -1)"><i class="bi bi-dash-circle-fill"></i></button>
+          <span class="ms-1 me-1" data-id="product-amount-in-shopping-cart">${amount}</span>
+          <button class="btn text-primary" data-plus-id="${product.id}" name="plus-button" onclick="adjustProductAmount('${product.id}', 1)"><i class="bi bi-plus-circle-fill"></i></button>
         </div>
       </div>
       <div class="d-flex flex-column">
@@ -90,12 +92,6 @@ function generateRebateLayout(rebate) {
 
 function getProductsCardsFromProductIds(productIds) {
   const productCards = structuredClone(initialProductCards);
-  // return productIds.reduce((res, id) => {
-  //   const productData = structuredClone(productCards.find((el) => el.id === id));
-  //   if (!res[id]) res[id] = { product: productData, amount: 0 };
-  //   res[id].amount++;
-  //   return res;
-  // }, {});
   return Object.keys(productIds).reduce((products, id) => {
     const productData = productCards.find((el) => el.id === id);
     products[id] = { product: productData, amount: productIds[id] };
@@ -160,4 +156,15 @@ function getTotalPriceFromProducsObject(products) {
   return Object.values(products)
     .reduce((res, p) => res + p.product.price * p.amount, 0)
     .toFixed(2);
+}
+
+function adjustProductAmount(productId, adding) {
+  const amountInput = document.querySelector(`[data-product-id="${productId}"] [data-id="product-amount-in-shopping-cart"]`);
+  console.log(amountInput);
+  if (amountInput.innerText <= 1 && adding < 0) return;
+  amountInput.innerText = +amountInput.innerText + adding;
+  adding > 0 ? shopStorageService.addProductToShopCard(productId) : shopStorageService.reduceProductAmountInShoppingCardByOne(productId);
+  const newProductsAmount = updateShoppingCardBadge();
+  updateTotalPriceInShoppingCart();
+  document.getElementById("amount-of-products-in-cart").innerText = newProductsAmount;
 }
