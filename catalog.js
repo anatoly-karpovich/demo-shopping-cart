@@ -2,6 +2,7 @@ function renderCatalogPage(cards = initialProductCards) {
   generateProductsComponent(cards);
   updateShoppingCardBadge();
   addEventListenersToCatalogPage();
+  state.appliedRebates = [];
 }
 
 function generateProductsComponent(cards = initialProductCards) {

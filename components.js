@@ -14,7 +14,15 @@ function generateProductCardLayout({ id, title, description, price }) {
   `;
 }
 
+function generateCheckoutButton(text, enable = false) {
+  return `
+  <div class="mt-3">
+    <button class="w-100 btn btn-primary btn-lg" type="submit" id="${text.toLowerCase().split(" ").join("-")}-button" ${enable ? "" : "disabled"}>${text}</button>
+  </div>`;
+}
+
 function updateShoppingCardBadge(amount) {
-  const numberOfProductsInCart = amount ?? shopStorageService.getProductsInShopingCard().length;
+  const numberOfProductsInCart = amount ?? shopStorageService.getFullNumberOfProductsInCard();
   document.getElementById("badge-number").innerText = numberOfProductsInCart;
+  return numberOfProductsInCart;
 }

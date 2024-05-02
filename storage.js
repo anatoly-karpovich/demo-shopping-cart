@@ -27,29 +27,44 @@ class DataStorageService {
 class ShopStorageService {
   #storageService = new DataStorageService();
 
-  setProductsInShopCard(products) {
+  #setProductsInShopCard(products) {
     this.#storageService.setDataByKey("shoppingCard", products);
   }
 
   getProductsInShopingCard() {
     const products = this.#storageService.getDataByKey("shoppingCard");
-    return products ?? [];
+    return products ?? {};
+  }
+
+  getFullNumberOfProductsInCard() {
+    const products = this.getProductsInShopingCard();
+    return getNumberOfProductsInProductsInShoppingCart(products);
   }
 
   addProductToShopCard(productId) {
     const products = this.getProductsInShopingCard();
-    products.push(productId);
-    this.setProductsInShopCard(products);
+    if (!products[productId]) products[productId] = 0;
+    products[productId]++;
+    this.#setProductsInShopCard(products);
+    return products;
+  }
+
+  reduceProductAmountInShoppingCardByOne(productId) {
+    const products = this.getProductsInShopingCard();
+    products[productId]--;
+    this.#setProductsInShopCard(products);
     return products;
   }
 
   removeItemFromShopCard(productId) {
     const products = this.getProductsInShopingCard();
-    const productIndex = products.findIndex((product) => product.id === productId);
-    if (productIndex !== -1) {
-      products.splice(productIndex, 1);
-      this.setProductsInShopCard(products);
-    }
+    delete products[productId];
+    this.#setProductsInShopCard(products);
+    return products;
+  }
+
+  removeAllProductsFromShopCard() {
+    this.#setProductsInShopCard({});
   }
 
   getRebates() {
