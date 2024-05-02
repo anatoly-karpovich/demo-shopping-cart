@@ -22,10 +22,11 @@ function addEventListenersToShoppingCartPage() {
 function deleteProductFromShoppingCart(id) {
   const product = document.querySelector(`[data-product-li="${id}"]`);
   product.parentNode.removeChild(product);
-  const newProductsAmount = shopStorageService.removeAllItemsWithSpecificIdFromCart(id);
-  updateShoppingCardBadge(newProductsAmount.length);
+  const updatedProductsObject = shopStorageService.reduceProductAmountInShoppingCardByOne(id);
+  const newProductsAmount = getNumberOfProductsInProductsInShoppingCart(updatedProductsObject);
+  updateShoppingCardBadge(newProductsAmount);
   updateTotalPriceInShoppingCart();
-  document.getElementById("amount-of-products-in-cart").innerText = newProductsAmount.length;
+  document.getElementById("amount-of-products-in-cart").innerText = newProductsAmount;
 }
 
 function generateShoppingCartProductLayout(product, amount) {
@@ -89,16 +90,22 @@ function generateRebateLayout(rebate) {
 
 function getProductsCardsFromProductIds(productIds) {
   const productCards = structuredClone(initialProductCards);
-  return productIds.reduce((res, id) => {
-    const productData = structuredClone(productCards.find((el) => el.id === id));
-    if (!res[id]) res[id] = { product: productData, amount: 0 };
-    res[id].amount++;
-    return res;
+  // return productIds.reduce((res, id) => {
+  //   const productData = structuredClone(productCards.find((el) => el.id === id));
+  //   if (!res[id]) res[id] = { product: productData, amount: 0 };
+  //   res[id].amount++;
+  //   return res;
+  // }, {});
+  return Object.keys(productIds).reduce((products, id) => {
+    const productData = productCards.find((el) => el.id === id);
+    products[id] = { product: productData, amount: productIds[id] };
+    return products;
   }, {});
 }
 
-function generateShoppingCartLayout(productIds, rebates = []) {
-  const products = getProductsCardsFromProductIds(productIds);
+function generateShoppingCartLayout(productsInShoppingCart, rebates = []) {
+  const products = getProductsCardsFromProductIds(productsInShoppingCart);
+  const numerOfProductsInShoppingCard = getNumberOfProductsInProductsInShoppingCart(productsInShoppingCart);
 
   const productsList = Object.values(products).reduce(
     (res, p) => res + `<li class="list-group-item d-flex justify-content-between lh-sm" data-product-li="${p.product.id}">${generateShoppingCartProductLayout(p.product, p.amount)}</li>`,
@@ -114,7 +121,7 @@ function generateShoppingCartLayout(productIds, rebates = []) {
     <div class="col-md-5 col-lg-4 order-md-last">
       <h4 class="d-flex justify-content-between align-items-center mb-3">
         <span class="text-primary">Your cart</span>
-        <span class="badge bg-primary rounded-pill" id="amount-of-products-in-cart">${productIds.length}</span>
+        <span class="badge bg-primary rounded-pill" id="amount-of-products-in-cart">${numerOfProductsInShoppingCard}</span>
       </h4>
       <ul class="list-group mb-3" id="products-in-shopping-cart">
         ${productsList}

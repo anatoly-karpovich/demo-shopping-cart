@@ -15,6 +15,6 @@ function generateProductCardLayout({ id, title, description, price }) {
 }
 
 function updateShoppingCardBadge(amount) {
-  const numberOfProductsInCart = amount ?? shopStorageService.getProductsInShopingCard().length;
+  const numberOfProductsInCart = amount ?? shopStorageService.getFullNumberOfProductsInCard();
   document.getElementById("badge-number").innerText = numberOfProductsInCart;
 }
