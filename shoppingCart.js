@@ -22,11 +22,12 @@ function addEventListenersToShoppingCartPage() {
 function deleteProductFromShoppingCart(id) {
   const product = document.querySelector(`[data-product-li="${id}"]`);
   product.parentNode.removeChild(product);
-  const updatedProductsObject = shopStorageService.reduceProductAmountInShoppingCardByOne(id);
+  const updatedProductsObject = shopStorageService.removeItemFromShopCard(id);
   const newProductsAmount = getNumberOfProductsInProductsInShoppingCart(updatedProductsObject);
   updateShoppingCardBadge(newProductsAmount);
   updateTotalPriceInShoppingCart();
   document.getElementById("amount-of-products-in-cart").innerText = newProductsAmount;
+  enableOrDisableElement(document.getElementById("checkout-button"), newProductsAmount > 0);
 }
 
 function generateShoppingCartProductLayout(product, amount) {
@@ -112,6 +113,7 @@ function generateShoppingCartLayout(productsInShoppingCart, rebates = []) {
   if (rebates.length) {
     totalPrice = calculatePriceWithRebates(totalPrice, rebates);
   }
+  state.totalPrice = totalPrice;
 
   return `
     <div class="col-md-5 col-lg-4 order-md-last">
@@ -136,6 +138,7 @@ function generateShoppingCartLayout(productsInShoppingCart, rebates = []) {
           ${generateRebatesLayout(rebates)}
         </div>
       </form>
+        ${generateCheckoutButton(numerOfProductsInShoppingCard > 0)}
     </div>`;
 }
 
@@ -150,6 +153,7 @@ function updateTotalPriceInShoppingCart() {
   const totalPriceWithRebates = calculatePriceWithRebates(totalPrice, state.appliedRebates);
   const totalPriceInShoppingCart = document.getElementById("total-price");
   totalPriceInShoppingCart.innerText = "$" + totalPriceWithRebates;
+  state.totalPrice = totalPriceWithRebates;
 }
 
 function getTotalPriceFromProducsObject(products) {
@@ -160,7 +164,6 @@ function getTotalPriceFromProducsObject(products) {
 
 function adjustProductAmount(productId, adding) {
   const amountInput = document.querySelector(`[data-product-id="${productId}"] [data-id="product-amount-in-shopping-cart"]`);
-  console.log(amountInput);
   if (amountInput.innerText <= 1 && adding < 0) return;
   amountInput.innerText = +amountInput.innerText + adding;
   adding > 0 ? shopStorageService.addProductToShopCard(productId) : shopStorageService.reduceProductAmountInShoppingCardByOne(productId);
