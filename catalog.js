@@ -6,10 +6,27 @@ function renderCatalogPage(cards = initialProductCards) {
 }
 
 function generateProductsComponent(cards = initialProductCards) {
-  const cardsLayout = cards.reduce((layout, card) => layout + generateProductCardLayout(card), "");
+  const cardsLayout = generateProductCardsLayout(cards);
   const contentContainer = document.getElementById("content");
-  const result = `<div class="d-flex justify-content-center mt-5" id="cards-container">${cardsLayout}</div>`;
+  const result = `<div class=" mt-5" id="cards-container">${cardsLayout}</div>`;
   contentContainer.innerHTML = result;
+}
+
+function generateProductCardsLayout(cards) {
+  const rowGenerator = (rowLayout) => `<div class="mb-5 d-flex justify-content-center">${rowLayout}</div>`;
+  let result = "";
+  let row = "";
+  for (let i = 1; i <= cards.length; i++) {
+    row += generateProductCardLayout(cards[i - 1]);
+    if (!(i % 5)) {
+      result += rowGenerator(row);
+      row = "";
+    }
+  }
+  if (row) {
+    result += rowGenerator(row);
+  }
+  return result;
 }
 
 function addEventListenersToCatalogPage() {
