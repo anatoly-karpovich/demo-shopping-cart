@@ -29,5 +29,6 @@ function generateDemoCheckoutPageLayout() {
         </div>
       </div>
     </div>
+    <div class="d-none">Code in SHA 1: 9c4218e5d95c7b3dafe8d0053b0a4e8671eb9b62</div>
   `;
 }

@@ -8,12 +8,16 @@ function renderShoppingCartPage() {
 }
 
 function addEventListenersToShoppingCartPage() {
-  document.getElementById("apply-promocode-button").addEventListener("click", (event) => {
+  document.getElementById("apply-promocode-button").addEventListener("click", async (event) => {
     event.preventDefault();
     const rebateInput = document.getElementById("rebate-input");
     const rebateInputValue = rebateInput.value.trim();
     if (!rebateInputValue) return;
-    addRebateToCart(rebateInputValue);
+    showSpinner();
+    const response = await sendRebatesRequest(rebateInputValue);
+    hideSpinner();
+    if (!response.IsSuccess) return;
+    addRebateToCart(response.Code);
     rebateInput.value = "";
     updateTotalPriceInShoppingCart();
   });
@@ -60,20 +64,16 @@ function generateShoppingCartProductLayout(product, amount) {
   `;
 }
 
-function addRebateToCart(rebateCode) {
-  if (!state.appliedRebates.some((r) => r.code === rebateCode)) {
-    const rebates = shopStorageService.getRebates();
-    const foundRebate = rebates.find((r) => r.code === rebateCode);
-    if (foundRebate) {
-      const rebatesList = document.getElementById("rebates-list");
-      if (rebatesList) {
-        rebatesList.insertAdjacentHTML("afterend", generateRebateLayout(foundRebate));
-      } else {
-        const container = document.getElementById("rebates-container");
-        container.innerHTML = generateRebatesLayout([foundRebate]);
-      }
-      state.appliedRebates.push(foundRebate);
+function addRebateToCart(rebate) {
+  if (!state.appliedRebates.some((r) => r.codeName === rebate.codeName)) {
+    const rebatesList = document.getElementById("rebates-list");
+    if (rebatesList) {
+      rebatesList.innerHTML += generateRebateLayout(rebate);
+    } else {
+      const container = document.getElementById("rebates-container");
+      container.innerHTML = generateRebatesLayout([rebate]);
     }
+    state.appliedRebates.push(rebate);
   }
 }
 
@@ -89,9 +89,9 @@ function generateRebatesLayout(rebates = []) {
 
 function generateRebateLayout(rebate) {
   return `
-  <li class="list-group-item d-flex justify-content-between">
-    <span class="my-0">${rebate.code}</span>
-    <small class="text-muted fw-bold">-${rebate.amount}%</small>
+  <li class="list-group-item d-flex justify-content-between mb-1">
+    <span class="my-0">${rebate.codeName}</span>
+    <small class="text-muted fw-bold">-${rebate.rebate}%</small>
   </li>
   `;
 }
@@ -137,7 +137,7 @@ function generateShoppingCartLayout(productsInShoppingCart, rebates = []) {
       <form class="card p-2">
         <div class="input-group">
           <input type="text" class="form-control" placeholder="Promo code" id="rebate-input">
-          <button type="submit" class="btn btn-secondary" id="apply-promocode-button">Redeem</button>
+          <button type="submit" class="btn btn-secondary" id="apply-promocode-button" title="введи 10-PERCENT-FOR-REDEEM">Redeem</button>
         </div>
         <div id="rebates-container">
           ${generateRebatesLayout(rebates)}
@@ -148,7 +148,7 @@ function generateShoppingCartLayout(productsInShoppingCart, rebates = []) {
 }
 
 function calculatePriceWithRebates(price, rebates = []) {
-  return (price - price * rebates.reduce((a, b) => a + b.amount / 100, 0)).toFixed(2);
+  return (price - price * rebates.reduce((a, b) => a + b.rebate / 100, 0)).toFixed(2);
 }
 
 function updateTotalPriceInShoppingCart() {
