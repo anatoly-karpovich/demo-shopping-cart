@@ -17,12 +17,14 @@ async function sendRebatesRequest(rebate) {
 
 function showSpinner() {
   const spinner = document.querySelector(`.overlay`);
-  spinner.style.display = "block";
+  spinner.classList.add("d-block");
+  spinner.classList.remove("d-none");
 }
 
 function hideSpinner() {
   const spinner = document.querySelector(`.overlay`);
-  spinner.style.display = "none";
+  spinner.classList.add("d-none");
+  spinner.classList.remove("d-block");
 }
 /**
  * Добро пожаловать в утилиты:)
