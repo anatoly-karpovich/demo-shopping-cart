@@ -34,6 +34,53 @@
   display: none;
 }
 
+.list-group-item {
+  border: none;
+}
+
+.accordion-item {
+  background-color: #fff;
+  border: none;
+}
+
+body {
+  padding-top: 70px; /* Задайте это значение в зависимости от высоты вашего хедера */
+}
+
+#header {
+  position: fixed;
+  width: 100%;
+  z-index: 1030; /* Убедитесь, что хедер находится выше других элементов */
+}
+
+/* #sidebar {
+  top: 70px; 
+  height: 100vh; 
+  overflow-y: auto;
+  transition: height 0.3s ease;
+} */
+
+#sidebar {
+  width: 250px; /* Фиксированная ширина для сайдбара */
+  transition: height 0.3s ease; /* Плавный переход высоты */
+  position: sticky; /* Сайдбар фиксируется при скролле */
+  top: 0; /* Сохранение прижатия к верху */
+  max-height: none; /* Высота автоматически подстраивается под содержимое */
+}
+
+#body {
+  background-color: rgb(241, 237, 237);
+  padding: 20px;
+}
+
+.accordion-button:not(.collapsed) {
+  box-shadow: none; /* Убираем тень с открытого аккордеона */
+}
+
+.accordion-button {
+  padding-left: 0;
+}
+
 /*
 Привет, зашедший в стили:)
 15-PERCENT-FOR-CSS

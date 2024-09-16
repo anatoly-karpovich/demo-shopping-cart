@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
   <link href="styles.css" rel="stylesheet">
   <title>Code: NO-PYTHON</title>
 </head>
@@ -16,28 +17,142 @@
       </div>
       </div>
     </div>
-  <div id="root">
-    <div id="header">
-      <nav class="custom-navbar navbar-dark bg-dark">
-        <div class="container-fluid ps-4 pe-4">
-          <form class="d-flex justify-content-between">
-            <div>
-              <span class="text-white fs-4">Demo shop</span>
-              <a class="navbar-brand ms-5 cursor" onclick="renderCatalogPage()">Catalog</a>
+    <div id="root">
+      <div id="header" class="fixed-top">
+        <nav class="custom-navbar navbar-dark bg-dark py-3">
+          <div class="container-fluid ps-4 pe-4">
+            <form class="d-flex justify-content-between align-items-center">
+              <div class="d-flex align-items-center">
+                <span class="text-white fs-4">Demo shop</span>
+                <a class="navbar-brand ms-5 cursor" onclick="renderCatalogPage()">Catalog</a>
+              </div>
+      
+              <div class="d-flex justify-content-end align-items-center">
+                <span class="fs-4 text-white me-4">Anatoly Karpovich</span>
+      
+                <!-- Shopping Cart with Icon and Badge -->
+                <div class="shopping-cart position-relative d-flex align-items-center">
+                  <button type="button" class="btn btn-outline-light d-flex align-items-center px-4 py-2" id="shopping-cart-btn">
+                    <i class="bi bi-cart3 me-2 fs-5"></i>
+                    <span>Shopping Cart</span>
+                  </button>
+                  <span class="badge position-absolute top-0 start-100 translate-middle bg-danger rounded-circle d-flex justify-content-center align-items-center" 
+                        id="badge-number" style="width: 28px; height: 28px; font-size: 0.85rem;">3</span>
+                </div>
+              </div>
+            </form>
+          </div>
+        </nav>
+      </div>
+      
+    
+      <!-- Body with gray background -->
+      <div id="body" class="d-flex justify-content-start mt-3">
+        <!-- Sidebar with filters -->
+        <div id="sidebar" class="shadow-sm p-3 rounded bg-light" style="width: 250px;">
+          <h4>Search options</h4>
+        
+          <!-- Search input -->
+          <div class="mb-3">
+            <label for="search-input" class="form-label">Search by name</label>
+            <input type="text" class="form-control" id="search-input" placeholder="Search...">
+          </div>
+        
+          <!-- Filter options -->
+          <h5>Filter by price</h5>
+          <div class="mb-1">
+            <label for="min-price-range" class="form-label">Minimum price: <span id="min-price-value">1000</span> USD</label>
+            <input type="range" class="form-range" id="min-price-range" min="0" max="2000" value="1000">
+          </div>
+          <div class="mb-3">
+            <label for="max-price-range" class="form-label">Maximum price: <span id="max-price-value">1000</span> USD</label>
+            <input type="range" class="form-range" id="max-price-range" min="0" max="2000" value="1000">
+          </div>
+        
+          <!-- Accordion for Manufacturers -->
+          <div class="accordion" id="accordion-manufacturers">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingManufacturers">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseManufacturers" aria-expanded="true" aria-controls="collapseManufacturers">
+                  Manufacturers
+                </button>
+              </h2>
+              <div id="collapseManufacturers" class="accordion-collapse collapse show" aria-labelledby="headingManufacturers" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                  <!-- <div class=" list-group-item">
+                    <input class="form-check-input" type="checkbox" id="selectAll">
+                    <label class="form-check-label" for="selectAll">
+                      Select All
+                    </label>
+                  </div> -->
+                  <ul class="list-group">
+                    <li class="list-group-item">
+                      <input class="form-check-input me-1" type="checkbox" value="Apple" id="apple">
+                      <label class="form-check-label" for="apple">Apple</label>
+                    </li>
+                    <li class="list-group-item">
+                      <input class="form-check-input me-1" type="checkbox" value="Samsung" id="samsung">
+                      <label class="form-check-label" for="samsung">Samsung</label>
+                    </li>
+                    <li class="list-group-item">
+                      <input class="form-check-input me-1" type="checkbox" value="Google" id="google">
+                      <label class="form-check-label" for="google">Google</label>
+                    </li>
+                    <li class="list-group-item">
+                      <input class="form-check-input me-1" type="checkbox" value="Microsoft" id="microsoft">
+                      <label class="form-check-label" for="microsoft">Microsoft</label>
+                    </li>
+                    <li class="list-group-item">
+                      <input class="form-check-input me-1" type="checkbox" value="Sony" id="sony">
+                      <label class="form-check-label" for="sony">Sony</label>
+                    </li>
+                    <li class="list-group-item">
+                      <input class="form-check-input me-1" type="checkbox" value="Xiaomi" id="xiaomi">
+                      <label class="form-check-label" for="xiaomi">Xiaomi</label>
+                    </li>
+                    <li class="list-group-item">
+                      <input class="form-check-input me-1" type="checkbox" value="Amazon" id="amazon">
+                      <label class="form-check-label" for="amazon">Amazon</label>
+                    </li>
+                    <li class="list-group-item">
+                      <input class="form-check-input me-1" type="checkbox" value="Tesla" id="tesla">
+                      <label class="form-check-label" for="tesla">Tesla</label>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
-            <div class="d-flex justify-content-end">
-              <span class="fs-4 text-white me-4">Anatoly Karpovich</span>
-              <button type="button" class="btn btn-primary" id="shopping-cart-btn">
-                Shopping Cart <span class="badge bg-secondary" id="badge-number"></span>
-              </button>
-            </div>
-          </form>
+          </div>
+          <button class="btn btn-primary mt-3">Apply filters</button>
         </div>
-      </nav>
+    
+        <!-- Main content -->
+        <div id="content" class="flex-grow-1 bg-white shadow-sm p-4 rounded" style="margin-left: 20px;">
+          <div class="mt-5" id="cards-container">
+            <div class="mb-5 d-flex justify-content-center">
+              <!-- Your product cards go here -->
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div id="content">
-    </div>
-  </div>
+    
+    <script>
+      // JavaScript to update price value dynamically
+      const minPriceRange = document.getElementById('min-price-range');
+      const maxPriceRange = document.getElementById('max-price-range');
+      const minPriceValue = document.getElementById('min-price-value');
+      const maxPriceValue = document.getElementById('max-price-value');
+    
+      minPriceRange.addEventListener('input', function() {
+        minPriceValue.textContent = minPriceRange.value;
+      });
+
+      maxPriceRange.addEventListener('input', function() {
+        maxPriceValue.textContent = maxPriceRange.value;
+      });
+    </script>
+    
 <!-- code: JAVA-FOR-BOOMERS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   <script src="utils.js"></script>
@@ -45,9 +160,9 @@
   <script src="storage.js"></script>
   <script src="data.js"></script>
   <script src="components.js"></script>
-  <script src="catalog.js"></script>
+  <script src="pages/catalog.js"></script>
   <script src="shoppingCart.js"></script>
-  <script src="checkout.js"></script>
+  <script src="pages/checkout.js"></script>
   <script src="index.js"></script>
 </body>
 </html>

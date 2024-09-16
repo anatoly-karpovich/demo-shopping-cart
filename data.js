@@ -1,4 +1,5 @@
-const defaultDescription = "Some quick example text to build on the card title and make up the bulk of the card's content.";
+const defaultDescription =
+  "Some quick example text to build on the card title and make up the bulk of the card's content.";
 
 const initialProductCards = [
   { id: "a1b03de6-4de6-4c79-85af-dc4894452266", title: "Product 1", description: defaultDescription, price: 100 },
@@ -10,6 +11,14 @@ const initialProductCards = [
   { id: "b625f763-a647-4530-8303-d46fae1f2567", title: "Product 7", description: defaultDescription, price: 1300 },
   { id: "37bd3b67-1248-4ddb-8d61-8a853b145125", title: "Product 8", description: defaultDescription, price: 1500 },
   { id: "6aef55cd-7fee-477a-8786-b1a468d04f8c", title: "Product 9", description: defaultDescription, price: 1750 },
+  { id: "7edf6896-47ee-4137-94da-feadcdc24153", title: "Product 10", description: defaultDescription, price: 2000 },
+  { id: "7edf6896-47ee-4137-94da-feadcdc24153", title: "Product 10", description: defaultDescription, price: 2000 },
+  { id: "7edf6896-47ee-4137-94da-feadcdc24153", title: "Product 10", description: defaultDescription, price: 2000 },
+  { id: "7edf6896-47ee-4137-94da-feadcdc24153", title: "Product 10", description: defaultDescription, price: 2000 },
+  { id: "7edf6896-47ee-4137-94da-feadcdc24153", title: "Product 10", description: defaultDescription, price: 2000 },
+  { id: "7edf6896-47ee-4137-94da-feadcdc24153", title: "Product 10", description: defaultDescription, price: 2000 },
+  { id: "7edf6896-47ee-4137-94da-feadcdc24153", title: "Product 10", description: defaultDescription, price: 2000 },
+  { id: "7edf6896-47ee-4137-94da-feadcdc24153", title: "Product 10", description: defaultDescription, price: 2000 },
   { id: "7edf6896-47ee-4137-94da-feadcdc24153", title: "Product 10", description: defaultDescription, price: 2000 },
 ];
 
